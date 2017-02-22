@@ -35,10 +35,19 @@ if [ -z "$PANDORA_DB_PASSWORD" ]; then
 	exit 1
 fi
 
-#Create the pandora user to run the anyterd, mainly
-/usr/sbin/useradd -d /home/pandora -s /bin/false -M -g 0 pandora
+###############################################################################################################################
+aux=$(cat /etc/passwd | grep pandora | wc -l)
 
-cd /tmp/pandorafms/pandora_server && chmod +x pandora_server_installer && sync && ./pandora_server_installer --install
+
+if [ "$aux" -eq "0" ]  
+then
+	/usr/sbin/useradd -d /home/pandora -s /bin/false -M -g 0 pandora
+	cd /tmp/pandorafms/pandora_server && chmod +x pandora_server_installer && sync && ./pandora_server_installer --install
+elif [ "$aux" -eq "1" ]
+then
+	echo "el usuario pandora ya existe"
+fi
+###############################################################################################################################
 
 #Configure the Pandora FMS Server to connect to the database
 sed -i "s/dbname pandora/dbname $PANDORA_DB_NAME/g" /etc/pandora/pandora_server.conf

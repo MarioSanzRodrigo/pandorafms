@@ -49,11 +49,12 @@ RUN yum install -y \
 	perl-XML-Twig \ 
 	perl-Encode-Locale \
 	net-snmp \
-	net-snmp-utils
+	net-snmp-utils \
+	nc \
+	nano
 	
 
-#Clone the repo
-RUN git clone -b develop https://github.com/pandorafms/pandorafms.git /tmp/pandorafms
+RUN git clone -b develop https://github.com/MarioSanzRodrigo/pandorafms /tmp/pandorafms
 
 #Exposing ports for: Tentacle protocol
 EXPOSE 41121
@@ -63,4 +64,3 @@ ADD docker_entrypoint.sh /entrypoint.sh
 RUN chmod -v +x /entrypoint.sh
 
 CMD ["/entrypoint.sh"]
-
