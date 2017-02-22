@@ -51,14 +51,14 @@ RUN yum install -y \
 	nc
 
 
-COPY pandorafms /tmp/pandorafms
+RUN git clone -b develop https://github.com/MarioSanzRodrigo/pandorafms /tmp/pandorafms
 
 #Exposing ports for: Tentacle protocol
 EXPOSE 41121
 
 # Simple startup script to avoid some issues observed with container restart
-ADD docker_entrypoint.sh /entrypoint_console.sh
-RUN chmod -v +x /entrypoint_console.sh
+ADD docker_entrypoint.sh /entrypoint.sh
+RUN chmod -v +x /entrypoint.sh
 
-CMD ["/entrypoint_console.sh"]
+CMD ["/entrypoint.sh"]
 
