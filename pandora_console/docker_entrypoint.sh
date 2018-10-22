@@ -35,7 +35,13 @@ if [ -z "$PANDORA_DB_PASSWORD" ]; then
 	exit 1
 fi
 
-mv -f /tmp/pandorafms/pandora_console /var/www/html
+condition=$(cat /etc/passwd | grep pandora | grep -v grep | wc -l)
+if [ "$condition" = "1" ]
+then
+    	echo "existe"
+else
+    	mv -f /tmp/pandorafms/pandora_console /var/www/html
+fi
 cd /var/www/html/pandora_console/include
 cat > config.php <<- 'EOF'
 <?php
@@ -67,10 +73,14 @@ sed "s/.*upload_max_filesize =.*/upload_max_filesize = 800M/" /etc/php.ini > /tm
 sed "s/.*memory_limit =.*/memory_limit = 500M/" /etc/php.ini > /tmp/php.ini && mv /tmp/php.ini /etc/php.ini
 sed "s/.*post_max_size =.*/post_max_size = 100M/" /etc/php.ini > /tmp/php.ini && mv /tmp/php.ini /etc/php.ini
 
-cd /var/www/html/pandora_console && mv -f install.php install.php.done
+if [ "$condition" = "1" ]
+then
+    	echo "existe"
+else
+    	/usr/sbin/useradd -d /home/pandora -s /bin/false -M -g 0 pandora
+        cd /tmp/pandorafms/pandora_server && ./pandora_server_installer --insta$
 
-#Create the pandora user to run the anyterd, mainly
-/usr/sbin/useradd -d /home/pandora -s /bin/false -M -g 0 pandora
+fi
 
 #Rock n' roll!
 /etc/init.d/crond start &
