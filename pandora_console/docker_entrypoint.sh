@@ -78,7 +78,7 @@ then
     	echo "existe"
 else
     	/usr/sbin/useradd -d /home/pandora -s /bin/false -M -g 0 pandora
-        cd /tmp/pandorafms/pandora_server && ./pandora_server_installer --insta$
+		cd /var/www/html/pandora_console && mv -f install.php install.php.done
 
 fi
 
